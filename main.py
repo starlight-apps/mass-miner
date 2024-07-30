@@ -39,7 +39,7 @@ async def main():
             if response["coin"] > 0:
                 print(Fore.GREEN + "[+]" + Style.RESET_ALL + " " + f"Got {coin} MSC$.")
             else:
-                print(Fore.RED + "[-]" + Style.RESET_ALL + " " + "Didn't find any coins.")
+                print(Fore.RED + "[-]" + Style.RESET_ALL + " " + "Found find any coins.")
 
             sleep(1.1)
 
