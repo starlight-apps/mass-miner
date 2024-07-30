@@ -1,9 +1,8 @@
-from time import sleep
 from websockets import connect
 from websockets.exceptions import InvalidStatusCode
 from typing import TypedDict
 from json import loads
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 from toml import load
 import asyncio
 
@@ -16,6 +15,8 @@ class Miner(TypedDict):
 
 class Config(TypedDict):
     miner: Miner
+
+init(convert=True)
 
 print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"Loading config file...")
 
@@ -42,7 +43,7 @@ async def main():
             else:
                 print(Fore.RED + "[-]" + Style.RESET_ALL + " " + "Didn't find any coins.")
 
-            sleep(1.1)
+            await asyncio.sleep(1.1)
 
 try:
     asyncio.run(main())
