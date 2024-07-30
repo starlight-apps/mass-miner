@@ -25,6 +25,7 @@ After that, go to [the MassCoin settings](https://masscoin.xyz/settings) and cop
 
 ```toml
 [miner]
+server = "wss://m1.masscoin.xyz"
 token = "[your-token-here]"
 ```
 
