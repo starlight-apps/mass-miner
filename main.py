@@ -11,6 +11,7 @@ class Response(TypedDict):
     coin: float
 
 class Miner(TypedDict):
+    server: str
     token: str
 
 class Config(TypedDict):
@@ -24,7 +25,7 @@ miner_config = config["miner"]
 print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"Connecting...")
 
 async def main():
-    async with connect("wss://m1.masscoin.xyz", close_timeout=2, extra_headers={
+    async with connect(miner_config["server"], close_timeout=2, extra_headers={
         "Cookie": f"token={miner_config["token"]}"
     }) as websocket:
         print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"Connected, starting to mine.\n")

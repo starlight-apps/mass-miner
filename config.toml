@@ -1,2 +1,3 @@
 [miner]
+server = "wss://m1.masscoin.xyz"
 token = ""
