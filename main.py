@@ -72,7 +72,6 @@ while True:
         print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"KeyboardInterrupted. Closing...")
         exit(0)
     
-
-        
+    # anything else that can close the connection
     except Exception:
         print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"Connection interrupted, reconnecting...")
