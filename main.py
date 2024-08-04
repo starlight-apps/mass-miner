@@ -31,6 +31,9 @@ async def main():
     }) as websocket:
         print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"Connected, starting to mine.\n")
 
+        # to recatch the miner's pace on reconnects
+        await asyncio.sleep(1.1)
+
         while True:
             await websocket.send("")
 
@@ -45,17 +48,31 @@ async def main():
 
             await asyncio.sleep(1.1)
 
-try:
-    asyncio.run(main())
-except TimeoutError as e:
-    print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"Connection took too long. Try asking on the MassCoin Discord server @ https://discord.gg/rn5nAVmTBk")
-except KeyboardInterrupt as e:
-    print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"Interrupted. Closing...")
-except InvalidStatusCode as e:
-    if e.status_code == 401:
-        print(Fore.RED + "[e]" + Style.RESET_ALL + " " + f"Incorrect credentials.")
-        exit(0)
+runner = asyncio.Runner()
 
-    # shouldn't happen but maybe some cloudflare issue, regardless I'll leave it in
-    print(Fore.RED + "[e]" + Style.RESET_ALL + " " + f"Server returned an unusual code. Try asking on the MassCoin Discord server @ https://discord.gg/rn5nAVmTBk")
-    exit(1)
+while True:
+    try:
+        runner.run(main())
+    
+    # initial connection failures
+    except TimeoutError as e:
+        print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"Connection took too long. Try asking on the MassCoin Discord server @ https://discord.gg/rn5nAVmTBk")
+        exit(1)
+    except InvalidStatusCode as e:
+        if e.status_code == 401:
+            print(Fore.RED + "[e]" + Style.RESET_ALL + " " + f"Incorrect credentials.")
+            exit(1)
+            
+        # shouldn't happen but maybe some cloudflare issue, regardless I'll leave it in
+        print(Fore.RED + "[e]" + Style.RESET_ALL + " " + f"Server returned an unusual code. Try asking on the MassCoin Discord server @ https://discord.gg/rn5nAVmTBk")
+        exit(1)
+    
+    # ctrl+c
+    except KeyboardInterrupt as e:
+        print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"KeyboardInterrupted. Closing...")
+        exit(0)
+    
+
+        
+    except Exception:
+        print(Fore.BLUE + "[i]" + Style.RESET_ALL + " " + f"Connection interrupted, reconnecting...")
